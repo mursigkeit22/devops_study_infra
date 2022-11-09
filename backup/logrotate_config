@@ -1,0 +1,9 @@
+/opt/log/*.log { 
+  rotate 3 
+  compress 
+  copytruncate
+  size 10M 
+  postrotate
+        echo "complete rotation for $1 $(date)" >> /opt/student_rotate.log
+    endscript
+} 
