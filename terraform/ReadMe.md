@@ -36,5 +36,5 @@ No resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_external_ip_address"></a> [external\_ip\_address](#output\_external\_ip\_address) | n/a |
-| <a name="output_internal_ip_address"></a> [internal\_ip\_address](#output\_internal\_ip\_address) | n/a |
+| <a name="output_external_ip_address"></a> [external\_ip\_address](#output\_external\_ip\_address) | external ip address of created VM |
+| <a name="output_internal_ip_address"></a> [internal\_ip\_address](#output\_internal\_ip\_address) | internal ip address of created VM |
