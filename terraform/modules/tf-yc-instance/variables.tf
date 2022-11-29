@@ -86,6 +86,6 @@ variable "ssh_public_key" {
 
 variable "ssh_public_key_default" {
   type = string
-  description = "ssh access for defalut VM user"
+  description = "ssh access for default VM user"
   nullable = true
 }

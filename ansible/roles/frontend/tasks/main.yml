@@ -1,0 +1,50 @@
+---
+# tasks file for frontend
+# установку пакетов npm, nodejs Примечание: для установки nodejs используйте инструкцию
+# создание сервисного пользователя www-data
+# создание директории /var/www-data с правами 0755 www-data:www-data
+# загрузка артефактов из Nexus — параметризуйте номера версий
+# создание systemd-юнита для сервиса
+# запуск фронтенда
+
+
+- name: add nodejs apt key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+  become: true
+
+- name: add nodejs ppa for apt repo
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/{{nodejs_version_repo}}"
+    update_cache: yes
+  become: true
+
+- name: install nodejs
+  apt:
+    update_cache: yes
+    name: "nodejs={{ nodejs_main_version }}.*"
+    state: present
+  become: true
+
+- name: create group for service user
+  group:
+    name: "{{ frontend_service_user_group }}"
+    state: present
+
+- name: create service user
+  user:
+    name: "{{ frontend_service_user }}"
+    create_home: no
+    shell: /sbin/nologin
+  become: true 
+
+- name: create directory for front files
+  file:
+    path: "{{ frontend_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+  become: true
+# для логов тоже надо создать
