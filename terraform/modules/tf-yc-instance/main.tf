@@ -30,7 +30,7 @@ resource "yandex_compute_instance" "vm-1" {
 
     metadata = {
         serial-port-enable = var.serial_console_enable
-        ssh-keys = "ubuntu:${file(var.ssh_public_key_default)}"
+        ssh-keys = "ubuntu:${file(var.ssh_public_key_default_path)}"
         user-data = data.template_file.user_data.rendered
     }
 }
@@ -40,7 +40,7 @@ data "template_file" "user_data" {
 
         vars = {
             username       = var.username
-            ssh_public_key = file(var.ssh_public_key)
+            ssh_public_key = file(var.ssh_public_key_path)
         }
     }
 
