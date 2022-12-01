@@ -3,6 +3,7 @@ Description=Backend of sausage-store
 
 [Service]
 User={{ backend_service_user }}
+Group={{ backend_service_user_group }}
 EnvironmentFile={{ backend_environment_file_path }}
 StandardOutput=file:{{ backend_standard_output_file_path }}
 StandardError=file:{{ backend_standard_error_file_path }}

@@ -4,13 +4,15 @@ java_apt_package: openjdk-16-jdk
 lxml_package: python3-lxml
 
 backend_service_user: jarservice
+backend_service_user_group: jarservice
 
+backend_jar_version: 	1.0.309938
 backend_jar_dir: /opt/sausage-store/backend/lib/
-backend_jar_name: sausage-store.jar
+backend_jar_name: "sausage-store-{{ backend_jar_version }}.jar"
 backend_nexus_repository_url: https://nexus.praktikum-services.ru/repository/sausage-store-Valerie-Shelgunova-backend
 backend_nexus_group_id: com.yandex.practicum.devops
 backend_nexus_artifact_id: sausage-store
-backend_jar_version: 	1.0.269551
+
 backend_nexus_username: std-009-052
 backend_nexus_pass: !vault |
           $ANSIBLE_VAULT;1.1;AES256

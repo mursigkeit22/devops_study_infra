@@ -7,15 +7,28 @@
       state: present
       update_cache: yes
   become: true   
+
+- name: install acl package for special permissions setting 
+  apt:
+      name: acl
+      state: present
+  become: true   
+
+- name: create group for service user
+  group:
+    name: "{{ backend_service_user_group }}"
+    state: present
+  become: true 
      
 - name: create service user
   user:
     name: "{{ backend_service_user }}"
     create_home: no
     shell: /sbin/nologin
+    group: "{{ backend_service_user_group }}"
   become: true 
 
-- name: install Python library lxml for maven_artifact to work
+- name: ensure Python library lxml for maven_artifact to work is installed
   apt:
     name: "{{ lxml_package }}"
     state: present
@@ -26,6 +39,23 @@
     path: "{{ backend_jar_dir }}"
     state: directory
   become: true
+
+- name: ensure path for reports exists
+  file:
+    path: "{{ backend_report_path }}"
+    state: directory
+  become: true
+
+- name: add permissions for service user to reports folder
+  ansible.posix.acl:
+    path:  "{{ backend_report_path }}"
+    entity: "{{ backend_service_user }}"
+    etype: user
+    permissions: rwx
+    default: yes
+    state: present
+  become: true
+
 
 - name: download jar file 
   maven_artifact:
@@ -45,28 +75,23 @@
     dest: "{{ backend_environment_file_path }}" 
   become: true
 
-# - name: permissions for -create report path, если она уже есть
-
-- name: create log path
+- name: ensure log path exists
   file:
     path: "{{ backend_log_path }}"
     state: directory
   become: true
 
 
-- name: create backend service file 
+- name: create or update backend service file 
   template:
     src: sausage-store-backend.service.j2
     dest: "/etc/systemd/system/{{ backend_service_filename }}"
   become: true
+  notify: restart systemd
 
-- name: reload systemd
+- name: ensure service is started
   systemd:
-    daemon_reload: yes
-  become: true
-
-- name: start systemd
-  service:
+    daemon_reload: true
     name: sausage-store-backend.service
     state: started 
   become: true

@@ -2,21 +2,31 @@
 # vars file for frontend
 nodejs_main_version: 16
 nodejs_version_repo: "node_{{nodejs_main_version}}.x bionic main"
+lxml_package: python3-lxml
 
 frontend_service_user: www-data
 frontend_service_user_group: www-data
-frontend_dir: /var/www-data
+frontend_dir: /var/www-data/dist/
 
-backend_nexus_repository_url: https://nexus.praktikum-services.ru/repository/sausage-store-Valerie-Shelgunova-backend
-backend_nexus_group_id: com.yandex.practicum.devops
-backend_nexus_artifact_id: sausage-store
-backend_jar_version: 	1.0.269551
-backend_nexus_username: std-009-052
-backend_nexus_pass: !vault |
+frontend_file_name: sausage-store-frontend.tar.gz
+
+frontend_nexus_repository_url: https://nexus.praktikum-services.ru/repository/sausage-store-Valerie-Shelgunova-frontend
+frontend_nexus_artifact_id: sausage-store
+frontend_version: 	1.0.309938
+frontend_nexus_filename: "sausage-store-{{frontend_version}}.tar.gz"
+frontend_nexus_username: std-009-052
+frontend_nexus_pass: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           33616637303364613965666537646531636262346264366430363036613137656636336161636632
           3265653765386231613064316630306564313735393132370a303863343566623234306166323161
           65613364666238343936666136343134613031326662643836633830333537626635333062613834
           3231386562366131630a363939623436366335636566353037353636333439633530383533633934
           6234
+
+
+frontend_log_path: /opt/log/
+frontend_service_filename:  sausage-store-frontend.service
+
+frontend_standard_output_file_path: "{{ frontend_log_path }}sausage-store-frontend.log"
+frontend_standard_error_file_path: "{{ frontend_log_path }}error-sausage-store-frontend.log"
 

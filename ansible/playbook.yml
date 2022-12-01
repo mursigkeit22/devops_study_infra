@@ -1,8 +1,11 @@
 ---
-- name: deploy backend 
-  # Шаблон целевых хостов это группа хостов с именем backend
+- name: deploy frontend 
   hosts: temp_vm
-  # Список ansible-ролей для backend-серверов
   roles:
     - frontend
+
+- name: deploy backend 
+  hosts: temp_vm
+  roles:
+    - backend
 
