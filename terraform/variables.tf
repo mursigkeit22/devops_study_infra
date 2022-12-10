@@ -35,13 +35,13 @@ variable "username" {
   nullable = false
 }
 
-variable "ssh_public_key" {
+variable "ssh_public_key_path" {
   type = string
   description = "path to file with ssh public key for user which is defined with 'username' variable"
   nullable = true
 }
 
-variable "ssh_public_key_default" {
+variable "ssh_public_key_default_path" {
   type = string
   description = "path to file with ssh public key for default VM user"
   nullable = true
