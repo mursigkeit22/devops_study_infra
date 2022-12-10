@@ -99,6 +99,7 @@
 
 - name: ensure service is started
   systemd:
+    enabled: true
     daemon_reload: true
     name: sausage-store-frontend.service
     state: started 
