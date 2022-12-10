@@ -1,0 +1,14 @@
+[Unit]
+Description=Frontend of sausage-store
+
+[Service]
+SuccessExitStatus=143
+User={{ frontend_service_user }}
+Group={{ frontend_service_user_group }}
+ExecStart=/usr/bin/http-server {{frontend_dir}}frontend/ -p 80 --proxy http://localhost:8080
+Restart=always
+StandardOutput=append:{{ frontend_standard_output_file_path }}
+StandardError=append:{{ frontend_standard_error_file_path }}
+
+[Install]
+WantedBy=multi-user.target

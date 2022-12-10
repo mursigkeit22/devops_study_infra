@@ -1,0 +1,98 @@
+---
+# tasks file for backend
+
+- name: Install Java package
+  apt:
+      name: "{{ java_apt_package }}"
+      state: present
+      update_cache: yes
+  become: true   
+
+- name: install acl package for special permissions setting 
+  apt:
+      name: acl
+      state: present
+  become: true   
+
+- name: create group for service user
+  group:
+    name: "{{ backend_service_user_group }}"
+    state: present
+  become: true 
+     
+- name: create service user
+  user:
+    name: "{{ backend_service_user }}"
+    create_home: no
+    shell: /sbin/nologin
+    group: "{{ backend_service_user_group }}"
+  become: true 
+
+- name: ensure Python library lxml for maven_artifact to work is installed
+  apt:
+    name: "{{ lxml_package }}"
+    state: present
+  become: true  
+
+- name: create directory for jar file
+  file:
+    path: "{{ backend_jar_dir }}"
+    state: directory
+  become: true
+
+- name: ensure path for reports exists
+  file:
+    path: "{{ backend_report_path }}"
+    state: directory
+  become: true
+
+- name: add permissions for service user to reports folder
+  ansible.posix.acl:
+    path:  "{{ backend_report_path }}"
+    entity: "{{ backend_service_user }}"
+    etype: user
+    permissions: rwx
+    default: yes
+    state: present
+  become: true
+
+
+- name: download jar file 
+  maven_artifact:
+    username: "{{ backend_nexus_username }}"
+    password: "{{ backend_nexus_pass }}"
+    dest: "{{ backend_jar_dir }}{{ backend_jar_name }}"
+    repository_url: "{{ backend_nexus_repository_url }}"
+    group_id: "{{ backend_nexus_group_id }}"
+    artifact_id: "{{ backend_nexus_artifact_id }}"
+    version: "{{ backend_jar_version }}"
+    owner: "{{ backend_service_user }}"
+  become: true
+
+- name: create environment file
+  template:
+    src: backend_environment.j2
+    dest: "{{ backend_environment_file_path }}" 
+  become: true
+
+- name: ensure log path exists
+  file:
+    path: "{{ backend_log_path }}"
+    state: directory
+  become: true
+
+
+- name: create or update backend service file 
+  template:
+    src: sausage-store-backend.service.j2
+    dest: "/etc/systemd/system/{{ backend_service_filename }}"
+  become: true
+  notify: restart systemd
+
+- name: ensure service is started
+  systemd:
+    enabled: true
+    daemon_reload: true
+    name: sausage-store-backend.service
+    state: started 
+  become: true

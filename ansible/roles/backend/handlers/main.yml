@@ -1,0 +1,8 @@
+---
+# handlers file for backend
+- name: restart systemd
+  systemd:
+    daemon_reload: true
+    name: sausage-store-backend.service
+    state: restarted 
+  become: true

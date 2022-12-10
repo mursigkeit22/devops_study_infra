@@ -1,0 +1,11 @@
+---
+- name: deploy frontend 
+  hosts: temp_vm
+  roles:
+    - frontend
+
+- name: deploy backend 
+  hosts: temp_vm
+  roles:
+    - backend
+

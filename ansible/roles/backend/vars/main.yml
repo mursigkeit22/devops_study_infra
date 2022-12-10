@@ -1,0 +1,31 @@
+---
+# vars file for backend
+java_apt_package: openjdk-16-jdk
+lxml_package: python3-lxml
+
+backend_service_user: jarservice
+backend_service_user_group: jarservice
+
+backend_jar_version: 	1.0.309938
+backend_jar_dir: /opt/sausage-store/backend/lib/
+backend_jar_name: "sausage-store-{{ backend_jar_version }}.jar"
+backend_nexus_repository_url: https://nexus.praktikum-services.ru/repository/sausage-store-Valerie-Shelgunova-backend
+backend_nexus_group_id: com.yandex.practicum.devops
+backend_nexus_artifact_id: sausage-store
+
+backend_nexus_username: std-009-052
+backend_nexus_pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          33616637303364613965666537646531636262346264366430363036613137656636336161636632
+          3265653765386231613064316630306564313735393132370a303863343566623234306166323161
+          65613364666238343936666136343134613031326662643836633830333537626635333062613834
+          3231386562366131630a363939623436366335636566353037353636333439633530383533633934
+          6234
+
+backend_log_path: /opt/log/
+backend_report_path: /var/www-data/htdocs/
+backend_service_filename:  sausage-store-backend.service
+
+backend_environment_file_path: "{{ backend_jar_dir }}sausagestore.env"
+backend_standard_output_file_path: "{{ backend_log_path }}sausage-store-backend.log"
+backend_standard_error_file_path: "{{ backend_log_path }}error-sausage-store-backend.log"

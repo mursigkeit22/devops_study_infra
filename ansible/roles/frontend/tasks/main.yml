@@ -1,0 +1,111 @@
+---
+- name: add nodejs apt key
+  apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    state: present
+  become: true
+
+- name: add nodejs ppa for apt repo
+  apt_repository:
+    repo: "deb https://deb.nodesource.com/{{nodejs_version_repo}}"
+    update_cache: yes
+  become: true
+
+- name: install nodejs
+  apt:
+    update_cache: yes
+    name: "nodejs={{ nodejs_main_version }}.*"
+    state: present
+  become: true
+
+- name: install http-server
+  npm:
+    name: http-server
+    global: true
+  become: true
+
+- name: install libcap2-bin- to launch http-server with port 80
+  apt:
+    name: libcap2-bin
+    state: present
+  become: true
+
+- name: ensure Python library lxml for maven_artifact to work is installed
+  apt:
+    name: "{{ lxml_package }}"
+    state: present
+  become: true  
+
+- name: create group for service user
+  group:
+    name: "{{ frontend_service_user_group }}"
+    state: present
+
+- name: create service user
+  user:
+    name: "{{ frontend_service_user }}"
+    create_home: no
+    shell: /sbin/nologin
+    group: "{{ frontend_service_user_group }}"
+  become: true 
+
+- name: create directory for front files
+  file:
+    path: "{{ frontend_dir }}"
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+  become: true
+
+- name: ensure log path exists
+  file:
+    path: "{{ frontend_log_path }}"
+    state: directory
+  become: true
+
+- name: download front archive 
+  get_url:
+    username: "{{ frontend_nexus_username }}"
+    password: "{{ frontend_nexus_pass }}"
+    dest: "{{ frontend_dir }}{{ frontend_file_name }}"
+    url: "{{ frontend_nexus_repository_url }}/{{ frontend_nexus_artifact_id }}/{{ frontend_version }}/{{frontend_nexus_filename}}"
+  become: true
+
+- name: unzip front files 
+  unarchive:
+    remote_src: true
+    src: "{{ frontend_dir }}{{ frontend_file_name }}"
+    dest:  "{{ frontend_dir }}"
+    group: "{{ frontend_service_user_group }}"
+    owner: "{{ frontend_service_user }}"
+  become: true
+    
+- name: ensure log path exists
+  file:
+    path: "{{ frontend_log_path }}"
+    state: directory
+  become: true
+
+- name: create or update frontend service file 
+  template:
+    src: sausage-store-frontend.service.j2
+    dest: "/etc/systemd/system/{{ frontend_service_filename }}"
+  become: true
+
+- name: allow nodejs use port 80 as non-root
+  ansible.builtin.shell: sudo setcap cap_net_bind_service=+ep /usr/bin/node
+
+
+- name: ensure service is started
+  systemd:
+    enabled: true
+    daemon_reload: true
+    name: sausage-store-frontend.service
+    state: started 
+  become: true
+
+    
+
+
+   
