@@ -23,5 +23,17 @@ spec:
           ports:
             - name: frontend
               containerPort: 8080
+          volumeMounts:
+          - name: nginx-html
+            mountPath: /usr/share/nginx/html/index.html
+            subPath: index.html
+            readOnly: true
+      volumes:
+        - name: nginx-html
+          configMap:
+            name: nginx-html
+            items:
+              - key: index.html
+                path: index.html
       imagePullSecrets:
         - name: docker-config-secret
