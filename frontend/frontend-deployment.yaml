@@ -29,7 +29,7 @@ spec:
             subPath: nginx.conf
             readOnly: true
       volumes:
-        - name: nginx-html
+        - name: nginx-conf
           configMap:
             name: nginx-conf
             items:
