@@ -10,6 +10,6 @@ spec:
   ports:
     - port: 89367
       protocol: TCP
-      targetPort: 80
+      targetPort: 8080
   selector:
     app: frontend 
