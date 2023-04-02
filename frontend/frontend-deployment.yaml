@@ -24,7 +24,7 @@ spec:
             - name: frontend
               containerPort: 8080
           volumeMounts:
-          - name: nginx-html
+          - name: nginx-conf
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
             readOnly: true
