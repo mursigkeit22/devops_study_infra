@@ -22,18 +22,18 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: frontend
-              containerPort: 8080
+              containerPort: 80
           volumeMounts:
           - name: nginx-html
-            mountPath: /usr/share/nginx/html/index.html
-            subPath: index.html
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
             readOnly: true
       volumes:
         - name: nginx-html
           configMap:
-            name: nginx-html
+            name: nginx-conf
             items:
-              - key: index.html
-                path: index.html
+              - key: nginx.conf
+                path: nginx.conf
       imagePullSecrets:
         - name: docker-config-secret
