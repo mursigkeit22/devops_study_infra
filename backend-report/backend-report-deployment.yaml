@@ -19,7 +19,7 @@ spec:
       containers:
         - name: backend-report
           image: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-backend-report:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: VAULT_URL
               value: 'http://62.84.127.198:8200'
