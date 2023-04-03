@@ -19,7 +19,7 @@ spec:
       containers:
         - name: backend
           image: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-backend:latest
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: SPRING_CLOUD_VAULT_HOST
               value: 62.84.127.198
