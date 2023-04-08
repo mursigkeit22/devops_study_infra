@@ -13,7 +13,10 @@ apply-kuber-manifests:
   script:
     - mkdir ~/.kube/
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
-    - ls -a
-    - kubectl get pods 
+    - kubectl apply -f kubernetes/backend/
+    - kubectl apply -f kubernetes/frontend/
+    - kubectl apply -f kubernetes/backend-report/
+    
+  
     
 
