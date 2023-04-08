@@ -10,7 +10,7 @@ deploy-job:
   script:
     - mkdir ~/.kube/
     - echo $KUBE_CONFIG > config.yaml
-    - mv config ~/.kube/
+    - mv config.yaml ~/.kube/
     - cat ~/.kube/config.yaml
     - kubectl get namespaces
     
