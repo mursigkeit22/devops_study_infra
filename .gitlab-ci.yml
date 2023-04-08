@@ -13,9 +13,7 @@ deploy-job:
       - kubernetes/**/*
   script:
     - mkdir ~/.kube/
-    - chmod 700 ~/.kube/
     - echo "$KUBE_CONFIG" > ~/.kube/config
-    - chmod 644 ~/.kube/config
     - cat /root/.kube/config
     - cd ~/.kube
     - ls -a
