@@ -1,1 +1,16 @@
+stages:
+  - deploy
+
+deploy-job:
+  stage: deploy
+  image: alpine/k8s
+  rules:
+    - changes:
+      - kubernetes/**/*
+  script:
+    - mkdir ~/.kube/
+    - echo $KUBE_CONFIG > config
+    - mv config ~/.kube/
+    - kubectl get namespaces
+    
 
