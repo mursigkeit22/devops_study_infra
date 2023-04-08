@@ -13,12 +13,13 @@ deploy-job:
       - kubernetes/**/*
   script:
     - mkdir ~/.kube/
-    - echo $KUBE_CONFIG > config
-    - mv config ~/.kube/
+    - chmod 700 ~/.kube/
+    - echo "$KUBE_CONFIG" > ~/.kube/config
+    - chmod 644 ~/.kube/config
     - cat /root/.kube/config
     - cd ~/.kube
     - ls -a
     - pwd
-    - kubectl get pods --kubeconfig=/root/.kube/config
+    - kubectl get pods 
     
 
