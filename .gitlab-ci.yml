@@ -9,7 +9,7 @@ deploy-job:
       - kubernetes/**/*
   script:
     - mkdir ~/.kube/
-    - echo "$KUBE_CONFIG" > ~/.kube/config
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
     - cat /root/.kube/config
     - kubectl get pods 
     
