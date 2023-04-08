@@ -9,8 +9,9 @@ deploy-job:
       - kubernetes/**/*
   script:
     - mkdir ~/.kube/
-    - echo $KUBE_CONFIG > config
+    - echo $KUBE_CONFIG > config.yaml
     - mv config ~/.kube/
+    - cat ~/.kube/config.yaml
     - kubectl get namespaces
     
 
