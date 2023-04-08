@@ -12,6 +12,6 @@ deploy-job:
     - echo $KUBE_CONFIG > config.yaml
     - mv config.yaml ~/.kube/
     - cat ~/.kube/config.yaml
-    - kubectl get pods
+    - kubectl get pods --kubeconfig=~/.kube/config.yaml
     
 
