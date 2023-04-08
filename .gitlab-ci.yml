@@ -9,12 +9,12 @@ deploy-job:
       - kubernetes/**/*
   script:
     - mkdir ~/.kube/
-    - echo $KUBE_CONFIG > config.yaml
-    - mv config.yaml ~/.kube/
-    - cat /root/.kube/config.yaml
+    - echo $KUBE_CONFIG > config
+    - mv config ~/.kube/
+    - cat /root/.kube/config
     - cd ~/.kube
     - ls -a
     - pwd
-    - kubectl get pods --kubeconfig=/root/.kube/config.yaml
+    - kubectl get pods --kubeconfig=/root/.kube/config
     
 
