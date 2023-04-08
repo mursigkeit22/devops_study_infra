@@ -1,23 +1,16 @@
-include:
-  - project: 'templates/ci'
-    file: 'DockerInDockerTemplate.yml'
-
 stages:
   - deploy
 
 deploy-job:
   stage: deploy
-  image: alpine/k8s:1.22.6
+  image: alpine/k8s:1.24.12
   rules:
     - changes:
       - kubernetes/**/*
   script:
     - mkdir ~/.kube/
-    - echo $KUBE_CONFIG > ~/.kube/config
+    - echo "$KUBE_CONFIG" > ~/.kube/config
     - cat /root/.kube/config
-    - cd ~/.kube
-    - ls -a
-    - pwd
     - kubectl get pods 
     
 
