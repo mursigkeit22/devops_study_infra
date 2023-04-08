@@ -7,7 +7,7 @@ stages:
 
 deploy-job:
   stage: deploy
-  image: alpine/k8s:1.24.12
+  image: alpine/k8s:1.22.6
   rules:
     - changes:
       - kubernetes/**/*
