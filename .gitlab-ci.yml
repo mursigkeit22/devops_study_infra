@@ -15,6 +15,6 @@ deploy-job:
     - cd ~/.kube
     - ls -a
     - pwd
-    - kubectl get pods --kubeconfig=~/.kube/config.yaml
+    - kubectl get pods --kubeconfig=/root/.kube/config.yaml
     
 
