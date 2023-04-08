@@ -11,7 +11,7 @@ deploy-job:
     - mkdir ~/.kube/
     - echo $KUBE_CONFIG > config.yaml
     - mv config.yaml ~/.kube/
-    - cat ~/.kube/config.yaml
+    - cat /root/.kube/config.yaml
     - cd ~/.kube
     - ls -a
     - pwd
