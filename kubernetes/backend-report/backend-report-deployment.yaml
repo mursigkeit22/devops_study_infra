@@ -53,7 +53,7 @@ spec:
       imagePullSecrets:
         - name: docker-config-secret
 ---
-apiVersion: autoscaling/v1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
   name: backend-report-hpa
@@ -66,5 +66,11 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: backend-report
-  targetCPUUtilizationPercentage: 75
+  metrics:
+    — type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 2 
 
