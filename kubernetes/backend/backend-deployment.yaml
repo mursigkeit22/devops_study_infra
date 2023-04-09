@@ -5,8 +5,8 @@ metadata:
   labels:
     app: backend
 spec:
-  
-  replicas: 3
+  # максимум 2 пода из-за 
+  replicas: 2
   revisionHistoryLimit: 15
   strategy:
     type: RollingUpdate 
