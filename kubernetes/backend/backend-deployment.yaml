@@ -5,10 +5,13 @@ metadata:
   labels:
     app: backend
 spec:
-  replicas: 2
+  
+  replicas: 3
   revisionHistoryLimit: 15
   strategy:
-    type: Recreate
+    type: RollingUpdate 
+    maxUnavailable: 1
+    maxSurge: 0
   selector:
     matchLabels:
       app: backend
