@@ -10,8 +10,9 @@ spec:
   revisionHistoryLimit: 15
   strategy:
     type: RollingUpdate 
-    maxUnavailable: 1
-    maxSurge: 0
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
   selector:
     matchLabels:
       app: backend
