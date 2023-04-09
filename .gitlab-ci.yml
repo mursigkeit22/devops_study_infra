@@ -1,22 +1,22 @@
-stages:
-  - deploy
+# stages:
+#   - deploy
 
-apply-kuber-manifests:
-  stage: deploy
-  image: alpine/k8s:1.24.12
-  rules:
-    - changes:
-      - kubernetes/**/*
-  environment:
-    name: kuber
-    url: https://shelgunova-valerie-10.k8s.praktikum-services.tech/
-  script:
-    - mkdir ~/.kube/
-    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
-    - kubectl apply -f kubernetes/backend/
-    - kubectl apply -f kubernetes/frontend/
-    - kubectl apply -f kubernetes/backend-report/
-    - rm -f ~/.kube/config
+# apply-kuber-manifests:
+#   stage: deploy
+#   image: alpine/k8s:1.24.12
+#   rules:
+#     - changes:
+#       - kubernetes/**/*
+#   environment:
+#     name: kuber
+#     url: https://shelgunova-valerie-10.k8s.praktikum-services.tech/
+#   script:
+#     - mkdir ~/.kube/
+#     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+#     - kubectl apply -f kubernetes/backend/
+#     - kubectl apply -f kubernetes/frontend/
+#     - kubectl apply -f kubernetes/backend-report/
+#     - rm -f ~/.kube/config
     
   
     
