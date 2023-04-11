@@ -6,8 +6,13 @@ metadata:
     app: backend
 spec:
   replicas: 2
+  revisionHistoryLimit: 15
   strategy:
-    type: Recreate
+    # 2 pod max because of "too many active clients for user" postgress error
+    type: RollingUpdate 
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 0
   selector:
     matchLabels:
       app: backend
