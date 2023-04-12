@@ -3,9 +3,14 @@ kind: Deployment
 metadata:
   name: backend
   labels:
+    environment: {{ .Values.global.environment }}
     app: backend
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/part-of: sausage-store
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
 spec:
-  replicas: 2
+  replicas: {{ .Values.global.backend.replicas }}
   revisionHistoryLimit: 15
   strategy:
     # 2 pod max because of "too many active clients for user" postgress error
@@ -23,13 +28,13 @@ spec:
     spec:
       containers:
         - name: backend
-          image: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-backend:latest
-          imagePullPolicy: Always
+          image: {{ .Values.global.backend.image.repository }}:{{ .Values.global.backend.image.tag }}
+          imagePullPolicy: {{ .Values.global.backend.imagePullPolicy }}
           env:
             - name: SPRING_CLOUD_VAULT_HOST
-              value: 62.84.127.198
+              value: {{ .Values.global.backend.env.SPRING_CLOUD_VAULT_HOST }}
             - name: REPORT_PATH
-              value: /var/reports
+              value: {{ .Values.global.backend.env.REPORT_PATH }}
             - name: SPRING_CLOUD_VAULT_TOKEN
               valueFrom:
                 secretKeyRef:

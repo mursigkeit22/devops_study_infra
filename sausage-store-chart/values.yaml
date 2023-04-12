@@ -1,8 +1,58 @@
-backend: # Это имя чарта из dependencies
-  # Вместо latest правильнее использовать версию .Chart.AppVersion в шаблоне
-  image: gitlab.praktikum-services.ru:5050/<my project>/sausage-store/sausage-backend
+global:
+
+  environment: production 
+
+  backend: 
+    image: 
+      repository: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-backend
+      tag: latest
+    imagePullPolicy: Always
+    replicas: 2
+    env:
+      SPRING_CLOUD_VAULT_HOST: 62.84.127.198
+      REPORT_PATH: /var/reports
+    service:
+      ports:
+        port: 8080
+
+  frontend:
+    image: 
+      repository: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-frontend
+      tag: latest
+    imagePullPolicy: Always
+    replicas: 1
+    service:
+      ports:
+        port: 56348
+    ingress:
+      host: shelgunova-valerie-10.k8s.praktikum-services.tech
+
+  backend_report:
+    image: 
+      repository: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-backend-report
+      tag: latest
+    imagePullPolicy: Always
+    replicas: 1
+    env:
+      VAULT_URL: http://62.84.127.198:8200
+      REPORT_PORT: 8080
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: 0.1
+      limits:
+        memory: "1025Mi"
+        cpu: 0.2 
+    HPA:
+      minReplicas: 1
+      maxReplicas: 5
+      averageUtilization: 75      
+    service:
+      ports:
+        port: 8080
+    
+  
   
 
-frontend:
-  fqdn: <namespace>.k8s.praktikum-services.tech
+
   
