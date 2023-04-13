@@ -22,7 +22,7 @@ release-helm-package:
     - changes:
       - sausage-store-chart/**/*
   script:
-    - curl -v -u std-009-052:1/EnFw+8 https://nexus.k8s.praktikum-services.tech/repository/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
+    - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
 
 
 apply-kuber-manifests:
@@ -38,8 +38,7 @@ apply-kuber-manifests:
     - mkdir ~/.kube/
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
 
-    - helm repo add sausage-store https://nexus.k8s.praktikum-services.tech/repository/sausage-store-helm-valerie-shelgunova-12/ --username std-009-052 --password 1/EnFw+8 
-    - helm repo list
+    - helm repo add sausage-store ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_PASS} 
     - helm repo update 
     - helm upgrade --install sausage-store sausage-store/sausage-store
     
