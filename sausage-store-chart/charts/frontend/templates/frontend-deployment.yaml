@@ -33,7 +33,7 @@ spec:
                 - frontend            
       containers:
         - name: frontend
-          image: {{ .Values.global.frontend.image.repository }}:{{ .Values.global.frontend.image.tag }}
+          image: {{ .Values.global.frontend.image.repository }}:{{ .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.global.backend.imagePullPolicy }}
           ports:
             - name: frontend
