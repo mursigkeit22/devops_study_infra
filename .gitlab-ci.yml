@@ -25,7 +25,7 @@ release-helm-package:
     - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
 
 
-apply-kuber-manifests:
+apply-helm-package:
   stage: deploy
   image: alpine/k8s:1.24.12
   rules:
