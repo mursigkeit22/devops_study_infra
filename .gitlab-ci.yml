@@ -22,37 +22,28 @@ release-helm-package:
     - changes:
       - sausage-store-chart/**/*
   script:
-    - ls
     - curl -v -u std-009-052:1/EnFw+8 https://nexus.k8s.praktikum-services.tech/repository/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
 
 
+apply-kuber-manifests:
+  stage: deploy
+  image: alpine/k8s:1.24.12
+  rules:
+    - changes:
+      - sausage-store-chart/**/*
+  environment:
+    name: helm
+    url: https://shelgunova-valerie-10.k8s.praktikum-services.tech/
+  script:
+    - mkdir ~/.kube/
+    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
 
-
-
-
-
-# apply-kuber-manifests:
-#   stage: deploy
-#   image: alpine/k8s:1.24.12
-#   rules:
-#     - changes:
-#       - sausage-store-chart/**/*
-#   environment:
-#     name: helm
-#     url: https://shelgunova-valerie-10.k8s.praktikum-services.tech/
-#   script:
-#     - mkdir ~/.kube/
-#     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
-
-#     - helm repo add sausage-store https://nexus.k8s.praktikum-services.tech/repository/sausage-store-helm-valerie-shelgunova-12/ --username std-009-052 --password 1/EnFw+8 
-#     - helm repo list
-#     - helm repo update 
-#     - pwd
-#     - ls
-#     - cd sausage-store-chart/
-#     -
-
-#     - rm -f ~/.kube/config
+    - helm repo add sausage-store https://nexus.k8s.praktikum-services.tech/repository/sausage-store-helm-valerie-shelgunova-12/ --username std-009-052 --password 1/EnFw+8 
+    - helm repo list
+    - helm repo update 
+    - helm upgrade --install sausage-store sausage-store/sausage-store
+    
+    - rm -f ~/.kube/config
     
   
     
