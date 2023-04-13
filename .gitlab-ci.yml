@@ -1,7 +1,7 @@
 stages:
   - build
   - release
-  # - deploy
+  - deploy
 
 build-helm-package:
   stage: build
