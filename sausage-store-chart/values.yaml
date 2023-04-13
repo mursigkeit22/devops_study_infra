@@ -5,7 +5,6 @@ global:
   backend: 
     image: 
       repository: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-backend
-      tag: latest
     imagePullPolicy: Always
     replicas: 2
     env:
@@ -18,7 +17,6 @@ global:
   frontend:
     image: 
       repository: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-frontend
-      tag: latest
     imagePullPolicy: Always
     replicas: 1
     service:
@@ -30,7 +28,6 @@ global:
   backend_report:
     image: 
       repository: gitlab.praktikum-services.ru:5050/std-009-052/sausage-store/sausage-backend-report
-      tag: latest
     imagePullPolicy: Always
     replicas: 1
     env:
