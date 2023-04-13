@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: backend-report
-          image: {{ .Values.global.backend_report.image.repository }}:{{ .Values.global.backend_report.image.tag }}
+          image: {{ .Values.global.backend_report.image.repository }}:{{ .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.global.backend_report.imagePullPolicy }}
           resources:
 {{ toYaml .Values.global.backend_report.resources | indent 12 }} 
