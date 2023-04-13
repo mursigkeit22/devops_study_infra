@@ -11,10 +11,10 @@ build-helm-package:
       - sausage-store-chart/**/*
   script: 
     - helm package sausage-store-chart/
-  # artifacts:
-  #   paths:
-  #     - sausage-store*.tgz
-  #   expire_in: 1 day
+  artifacts:
+    paths:
+      - sausage-store*.tgz
+    expire_in: 1 day
 
 release-helm-package:
   stage: release
@@ -23,6 +23,7 @@ release-helm-package:
       - sausage-store-chart/**/*
   script:
     - ls
+    - curl -v -u std-009-052:1/EnFw+8 https://nexus.k8s.praktikum-services.tech/repository/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
 
 
 
