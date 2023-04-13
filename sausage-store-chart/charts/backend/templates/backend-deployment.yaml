@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
         - name: backend
-          image: {{ .Values.global.backend.image.repository }}:{{ .Values.global.backend.image.tag }}
+          image: {{ .Values.global.backend.image.repository }}:{{ .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.global.backend.imagePullPolicy }}
           env:
             - name: SPRING_CLOUD_VAULT_HOST
