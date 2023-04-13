@@ -11,7 +11,20 @@ build-helm-package:
       - sausage-store-chart/**/*
   script: 
     - helm package sausage-store-chart/
+  artifacts:
+    paths:
+      - sausage-store*.tgz
+    expire_in: 1 day
+
+release-helm-package:
+  stage: release
+  rules:
+    - changes:
+      - sausage-store-chart/**/*
+  script:
     - ls
+
+
 
 
 
