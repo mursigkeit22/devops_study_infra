@@ -1,21 +1,47 @@
 stages:
+  - build
+  - release
   - deploy
 
-apply-kuber-manifests:
+build-helm-package:
+  stage: build
+  image: alpine/k8s:1.24.12
+  rules:
+    - changes:
+      - sausage-store-chart/**/*
+  script: 
+    - helm package sausage-store-chart/
+  artifacts:
+    paths:
+      - sausage-store*.tgz
+    expire_in: 1 day
+
+release-helm-package:
+  stage: release
+  rules:
+    - changes:
+      - sausage-store-chart/**/*
+  script:
+    - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
+
+
+apply-helm-package:
   stage: deploy
   image: alpine/k8s:1.24.12
   rules:
     - changes:
-      - kubernetes/**/*
+      - sausage-store-chart/**/*
   environment:
-    name: kuber
+    name: helm
     url: https://shelgunova-valerie-10.k8s.praktikum-services.tech/
   script:
     - mkdir ~/.kube/
     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
-    - kubectl apply -f kubernetes/backend/
-    - kubectl apply -f kubernetes/frontend/
-    - kubectl apply -f kubernetes/backend-report/
+
+    - helm repo add sausage-store ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_PASS} 
+    - helm repo update 
+    - helm upgrade --install sausage-store sausage-store/sausage-store
+    
     - rm -f ~/.kube/config
     
   
