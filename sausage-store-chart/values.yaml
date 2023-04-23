@@ -8,7 +8,8 @@ global:
     imagePullPolicy: Always
     replicas: 2
     env:
-      SPRING_CLOUD_VAULT_HOST: 62.84.127.198
+      VAULT_HOST: 62.84.127.198
+      VAULT_PORT: 8200
       REPORT_PATH: /var/reports
     service:
       ports:
