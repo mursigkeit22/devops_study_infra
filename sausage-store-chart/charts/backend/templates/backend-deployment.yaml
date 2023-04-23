@@ -33,6 +33,8 @@ spec:
           env:
             - name: VAULT_HOST
               value: {{ .Values.global.backend.env.VAULT_HOST }}
+            - name: VAULT_PORT
+              value: {{ .Values.global.backend.env.VAULT_PORT }}
             - name: REPORT_PATH
               value: {{ .Values.global.backend.env.REPORT_PATH }}
             - name: VAULT_TOKEN
