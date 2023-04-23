@@ -31,15 +31,15 @@ spec:
           image: {{ .Values.global.backend.image.repository }}:{{ .Chart.AppVersion }}
           imagePullPolicy: {{ .Values.global.backend.imagePullPolicy }}
           env:
-            - name: SPRING_CLOUD_VAULT_HOST
-              value: {{ .Values.global.backend.env.SPRING_CLOUD_VAULT_HOST }}
+            - name: VAULT_HOST
+              value: {{ .Values.global.backend.env.VAULT_HOST }}
             - name: REPORT_PATH
               value: {{ .Values.global.backend.env.REPORT_PATH }}
-            - name: SPRING_CLOUD_VAULT_TOKEN
+            - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
                   name: vault
-                  key: SPRING_CLOUD_VAULT_TOKEN
+                  key: VAULT_TOKEN
           ports:
             - name: backend
               containerPort: 8080
