@@ -10,6 +10,7 @@ global:
     env:
       VAULT_HOST: 62.84.127.198
       VAULT_PORT: 8200
+      VAULT_PATH: /spring
       REPORT_PATH: /var/reports
     service:
       ports:
@@ -34,6 +35,7 @@ global:
     env:
       VAULT_URL: http://62.84.127.198:8200
       REPORT_PORT: 8080
+      VAULT_PATH: /spring
     resources:
       requests:
         memory: "512Mi"
