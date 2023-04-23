@@ -1,48 +1,48 @@
-stages:
-  - build
-  - release
-  - deploy
+# stages:
+#   - build
+#   - release
+#   - deploy
 
-build-helm-package:
-  stage: build
-  image: alpine/k8s:1.24.12
-  rules:
-    - changes:
-      - sausage-store-chart/**/*
-  script: 
-    - helm package sausage-store-chart/
-  artifacts:
-    paths:
-      - sausage-store*.tgz
-    expire_in: 1 day
+# build-helm-package:
+#   stage: build
+#   image: alpine/k8s:1.24.12
+#   rules:
+#     - changes:
+#       - sausage-store-chart/**/*
+#   script: 
+#     - helm package sausage-store-chart/
+#   artifacts:
+#     paths:
+#       - sausage-store*.tgz
+#     expire_in: 1 day
 
-release-helm-package:
-  stage: release
-  rules:
-    - changes:
-      - sausage-store-chart/**/*
-  script:
-    - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
+# release-helm-package:
+#   stage: release
+#   rules:
+#     - changes:
+#       - sausage-store-chart/**/*
+#   script:
+#     - curl -u ${NEXUS_REPO_USER}:${NEXUS_REPO_PASS} ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --upload-file sausage-store*.tgz 
 
 
-apply-helm-package:
-  stage: deploy
-  image: alpine/k8s:1.24.12
-  rules:
-    - changes:
-      - sausage-store-chart/**/*
-  environment:
-    name: helm
-    url: https://shelgunova-valerie-10.k8s.praktikum-services.tech/
-  script:
-    - mkdir ~/.kube/
-    - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
+# apply-helm-package:
+#   stage: deploy
+#   image: alpine/k8s:1.24.12
+#   rules:
+#     - changes:
+#       - sausage-store-chart/**/*
+#   environment:
+#     name: helm
+#     url: https://shelgunova-valerie-10.k8s.praktikum-services.tech/
+#   script:
+#     - mkdir ~/.kube/
+#     - echo "$KUBE_CONFIG" | base64 -d > ~/.kube/config
 
-    - helm repo add sausage-store ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_PASS} 
-    - helm repo update 
-    - helm upgrade --install sausage-store sausage-store/sausage-store
+#     - helm repo add sausage-store ${NEXUS_REPO_URL}/sausage-store-helm-valerie-shelgunova-12/ --username ${NEXUS_REPO_USER} --password ${NEXUS_REPO_PASS} 
+#     - helm repo update 
+#     - helm upgrade --install sausage-store sausage-store/sausage-store
     
-    - rm -f ~/.kube/config
+#     - rm -f ~/.kube/config
     
   
     
