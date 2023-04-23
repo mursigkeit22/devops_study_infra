@@ -35,6 +35,8 @@ spec:
               value: "{{ .Values.global.backend_report.env.VAULT_URL }}"
             - name: REPORT_PORT
               value: "{{ .Values.global.backend_report.env.REPORT_PORT }}"
+            - name: VAULT_PATH
+              value: {{ .Values.global.backend.env.VAULT_PATH }}
             - name: VAULT_TOKEN
               valueFrom:
                 secretKeyRef:
