@@ -1,0 +1,50 @@
+---
+groups:
+  - name: Sausage store rules
+    rules:
+    - alert: InstanceDown
+      expr: up{app="backend"} == 0
+      for: 1m
+      labels:
+        severity: critical
+        project: "sausage_store"
+        component: "Backend"
+      annotations:
+        description: Backend is down for 1 minute
+        sender: std-009-052
+        summary: Backend is down!
+    - alert: Code500
+      expr: sum(rate(http_server_requests_seconds_count{status="500"}[1m])) > 0
+      for: 1m
+      labels:
+        severity: critical
+        project: "sausage_store"
+        component: "Backend"
+      annotations:
+        description: Backend returns 500 error
+        sender: std-009-052
+        summary: Error 500!
+    - alert: SlowOrders
+      expr: histogram_quantile(0.95, sum by (le) (rate(http_server_requests_seconds_bucket{uri="/api/orders", status="201"}[5m]))) > 0.1
+      for: 5m
+      labels:
+        severity: warning
+        project: "sausage_store"
+        component: "Backend"
+      annotations:
+        description: Backend needs more than 100 ms to process orders
+        sender: std-009-052
+        summary: Service is too slow!
+    - alert: PrometeusBroken
+      expr: sum(rate(http_server_requests_seconds_count{uri="/actuator/prometheus", status!~"2.."}[2m])) > 0
+      for: 2m
+      labels:
+        severity: critical
+        project: "sausage_store"
+        component: "Backend"
+      annotations:
+        description: Prometheus returns errors
+        sender: std-009-052
+        summary: Prometheus is broken
+      
+        
